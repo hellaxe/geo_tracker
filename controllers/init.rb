@@ -1,1 +1,2 @@
 require_relative 'main_controller'
+require_relative 'tasks_controller'

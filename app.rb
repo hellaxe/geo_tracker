@@ -8,11 +8,13 @@ class GeoTrackerApp < Sinatra::Base
         require 'pry'
         register Sinatra::Reloader
         Mongoid.load!("./config/database.yml", :development)
+        Mongoid.raise_not_found_error = false
     end
 
     configure :test do |config|
         require 'pry'
         Mongoid.load!("./config/database.yml", :test)
+        Mongoid.raise_not_found_error = false
     end
 
 end

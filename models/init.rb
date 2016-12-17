@@ -1,1 +1,5 @@
 require_relative 'user'
+require_relative 'driver'
+require_relative 'manager'
+require_relative 'task'
+require_relative 'api_key'
