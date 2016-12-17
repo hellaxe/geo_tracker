@@ -4,3 +4,10 @@ development:
       database: geo_tracker_development
       hosts:
         - localhost:27017
+
+test:
+  clients:
+    default:
+      database: geo_tracker_test
+      hosts:
+        - localhost:27017
