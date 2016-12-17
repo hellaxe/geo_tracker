@@ -4,6 +4,7 @@ gem 'sinatra-contrib'
 gem 'puma'
 gem 'mongoid'
 gem 'slim'
+gem 'ffaker'
 
 group :development do
     gem 'pry'

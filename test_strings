@@ -1,0 +1,3 @@
+curl -X 'POST' -d '{"task": {"title": "hello world", "description": "world hello", "pickup_location": [33, 47], "delivery_location": [34,57]}, "api_key": "f5066a76558012dfd40d12f836317fc2"}' http://localhost:9292/api/tasks
+
+curl -X 'GET' -d '{"loc": [1, 2], "api_key": "859f38890bb9a5ea5521cc0abf30da89"}' http://localhost:9292/api/tasks/nearest

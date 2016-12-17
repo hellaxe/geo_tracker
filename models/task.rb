@@ -7,8 +7,10 @@ class Task
 
     field :status, type: String, default: 'new'
 
-    field :pickup_location, type: Hash
-    field :delivery_location, type: Hash
+    field :pickup_location, type: Array
+    field :delivery_location, type: Array
+
+    index({ pickup_location: "2d" }, { min: -200, max: 200 })
 
     belongs_to :driver, class_name: 'Driver', optional: true
     belongs_to :manager, class_name: 'Manager'

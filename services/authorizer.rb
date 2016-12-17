@@ -1,7 +1,7 @@
 class Authorizer
     def self.call(api_key, *roles)
         key = ApiKey.find_by(key: api_key)
-
+        
         raise NotAuthorizedError, 'API Key does not exists' if key.nil?
 
         if roles.present?
