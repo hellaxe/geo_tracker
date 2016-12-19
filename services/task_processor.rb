@@ -1,16 +1,28 @@
 class TaskProcessor
-    def self.assign(task, driver)
-        raise AlreadyAssignedError unless task.status == 'new'
 
-        task.driver = driver
-        task.status = 'assigned'
+    class << self
+        def assign(task, driver)
+            raise ImpossibleStateTransitionError unless driver.present?
+            raise ImpossibleStateTransitionError unless task.status == 'new'
 
-        task.save
+            task.driver = driver
+            task.status = 'assigned'
+
+            task.save
+        end
+
+        def finish(task, driver)
+            raise ImpossibleStateTransitionError unless driver.present?
+            
+            if task.status != 'assigned' || task.driver_id != driver.id
+                raise ImpossibleStateTransitionError
+            end
+
+
+            task.status = 'finished'
+
+            task.save
+        end
     end
-
-    def self.finish(task)
-        task.status = 'finished'
-
-        task.save
-    end
+    
 end

@@ -2,8 +2,8 @@ class GeoTrackerApp < Sinatra::Base
 
     get '/api/tasks' do
         with_rescue do
-            parse_json_body
-            Authorizer.call(@json_body[:api_key], :driver, :manager)
+            parse_request_data
+            Authorizer.call(@request_params[:api_key], :driver, :manager)
             find_user
             @user.tasks.to_json
         end
@@ -11,19 +11,19 @@ class GeoTrackerApp < Sinatra::Base
 
     get '/api/tasks/nearest' do
         with_rescue do
-            parse_json_body
-            Authorizer.call(@json_body[:api_key], :driver)
+            parse_request_data
+            Authorizer.call(@request_params[:api_key], :driver)
             content_type :json
-            Task.new_tasks.near(pickup_location: @json_body[:loc]).limit(5).to_a.to_json
+            Task.new_tasks.near(pickup_location: @request_params[:loc]).limit(5).to_a.to_json
         end
     end
 
     post '/api/tasks' do
         with_rescue do
-            parse_json_body
-            Authorizer.call(@json_body[:api_key], :manager)
+            parse_request_data
+            Authorizer.call(@request_params[:api_key], :manager)
             find_user
-            task = Task.new(@json_body[:task])
+            task = Task.new(@request_params[:task])
             task.manager = @user
 
             task.save
@@ -69,11 +69,11 @@ class GeoTrackerApp < Sinatra::Base
     end
 
     def find_user
-        @user = ApiKey.find_by(key: @json_body[:api_key]).user
+        @user = ApiKey.find_by(key: @request_params[:api_key]).user
     end
 
-    def parse_json_body
+    def parse_request_data
         request.body.rewind
-        @json_body = JSON.parse(request.body.read).symbolize_keys
+        @request_params = JSON.parse(request.body.read).symbolize_keys
     end
 end
