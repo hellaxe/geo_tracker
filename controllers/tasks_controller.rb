@@ -44,7 +44,6 @@ class GeoTrackerApp < Sinatra::Base
         with_rescue do
             Authorizer.call(params[:api_key], :driver)
             find_user
-            binding.pry
             task = @user.tasks.assigned.find(id)
             
             TaskProcessor.finish(task)
@@ -64,7 +63,7 @@ class GeoTrackerApp < Sinatra::Base
         yield
     rescue NotAuthorizedError => e
         { message: e.message }.to_json
-    rescue AlreadyAssignedError => e
+    rescue ImpossibleStateTransitionError => e
         { message: e.message }.to_json
     end
 

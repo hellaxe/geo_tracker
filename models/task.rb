@@ -15,6 +15,10 @@ class Task
     belongs_to :driver, class_name: 'Driver', optional: true
     belongs_to :manager, class_name: 'Manager'
 
+    validates :driver, presence: true, if: Proc.new { |t| t.status != 'new' }
+    validates :title, presence: true, length: { maximum: 100, minimum: 10 }
+    validates :description, presence: true, length: { maximum: 1000, minimum: 10 }
+
     def self.new_tasks
         self.where(status: 'new')
     end
