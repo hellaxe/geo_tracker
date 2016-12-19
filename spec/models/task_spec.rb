@@ -3,9 +3,29 @@ require File.expand_path '../../spec_helper.rb', __FILE__
 describe Task do
     it 'requires manager' do
         task = build(:new_task, manager: nil)
-        expect(task.save).to be false
 
+        expect(task.save).to be false
         expect(task.errors).to have_key(:manager)
+    end
+
+    it 'requires locations with two coords' do
+        task = build(:new_task, pickup_location: [])
+
+        expect(task.save).to be false
+        expect(task.errors).to have_key(:pickup_location)
+
+        task.pickup_location = [1]
+
+        expect(task.save).to be false
+        expect(task.errors).to have_key(:pickup_location)
+
+        task.pickup_location = [1,2,3]
+
+        expect(task.save).to be false
+        expect(task.errors).to have_key(:pickup_location)
+
+        task.pickup_location = [1,2]
+        expect(task.save).to be true
     end
 
     it 'requires driver when assigned or finished' do

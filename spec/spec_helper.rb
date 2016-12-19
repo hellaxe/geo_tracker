@@ -22,6 +22,7 @@ RSpec.configure do |c|
         FactoryGirl.find_definitions
         DatabaseCleaner.strategy = :truncation
         DatabaseCleaner.clean
+        Task.create_indexes
     end
 
     c.around(:each) do |example|

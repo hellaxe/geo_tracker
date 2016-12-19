@@ -2,7 +2,7 @@ class TaskProcessor
 
     class << self
         def assign(task, driver)
-            raise ImpossibleStateTransitionError unless driver.present?
+            raise ImpossibleStateTransitionError if !driver.present? || !task.present?
             raise ImpossibleStateTransitionError unless task.status == 'new'
 
             task.driver = driver
@@ -12,7 +12,7 @@ class TaskProcessor
         end
 
         def finish(task, driver)
-            raise ImpossibleStateTransitionError unless driver.present?
+            raise ImpossibleStateTransitionError if !driver.present? || !task.present?
             
             if task.status != 'assigned' || task.driver_id != driver.id
                 raise ImpossibleStateTransitionError

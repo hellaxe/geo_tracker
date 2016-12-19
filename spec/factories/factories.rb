@@ -38,12 +38,17 @@ FactoryGirl.define do
     factory :new_task, class: Task do
         title       'Task Title'
         description 'Task Description'
+        pickup_location [90, 90]
+        delivery_location [27, 53]
         association :manager, factory: :manager_alice
     end
 
     factory :assigned_bob_task, class: Task do
         title       'Task Title'
         description 'Task Description'
+        pickup_location [90, 90]
+        delivery_location [27, 53]
+        
         association :manager, factory: :manager_alice
         association :driver, factory: :driver_bob
         status      'assigned'
