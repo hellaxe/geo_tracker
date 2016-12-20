@@ -2,7 +2,6 @@ class GeoTrackerApp < Sinatra::Base
 
     get '/api/tasks' do
         with_rescue do
-            parse_request_data
             Authorizer.call(@request_params['api_key'], :driver, :manager)
             find_user
             @user.tasks.to_json
@@ -11,7 +10,6 @@ class GeoTrackerApp < Sinatra::Base
 
     get '/api/tasks/nearest' do
         with_rescue do
-            parse_request_data
             Authorizer.call(@request_params['api_key'], :driver)
             content_type :json
             
@@ -26,10 +24,10 @@ class GeoTrackerApp < Sinatra::Base
 
     post '/api/tasks' do
         with_rescue do
-            parse_request_data
             Authorizer.call(@request_params['api_key'], :manager)
             find_user
-            task = Task.new(@request_params['task'])
+
+            task = Task.new(permitted_task_params)
             task.manager = @user
 
             if task.save
@@ -42,7 +40,6 @@ class GeoTrackerApp < Sinatra::Base
 
     patch '/api/tasks/:id/assign' do |id|
         with_rescue do
-            parse_request_data
             Authorizer.call(@request_params['api_key'], :driver)
             find_user
             task = Task.new_tasks.find(id)
@@ -53,8 +50,7 @@ class GeoTrackerApp < Sinatra::Base
     end
 
     patch '/api/tasks/:id/finish' do |id|
-        with_rescue do
-            parse_request_data
+        with_rescue do    
             Authorizer.call(@request_params['api_key'], :driver)
             find_user
             task = @user.tasks.assigned.find(id)
@@ -74,6 +70,9 @@ class GeoTrackerApp < Sinatra::Base
     end
 
     def with_rescue(&block)
+        pass unless request.accept? 'application/json'
+        parse_request_data
+
         yield
     rescue NotAuthorizedError => e
         halt(401, { errors: { auth: e.message } }.to_json)
@@ -83,6 +82,11 @@ class GeoTrackerApp < Sinatra::Base
 
     def find_user
         @user = ApiKey.find_by(key: @request_params['api_key']).user
+    end
+
+    def permitted_task_params
+        @request_params.fetch('task', {}).select {|k, v| %w(title description 
+            pickup_location delivery_location).include? k }
     end
 
     def parse_request_data

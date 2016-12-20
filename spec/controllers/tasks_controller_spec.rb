@@ -45,6 +45,20 @@ describe GeoTrackerApp do
             expect(data).to have_key('description')
         end
 
+        it 'considers only permitted params' do
+            task_params = {title: 'Test title', description: 'Test description', pickup_location: [1, 23], delivery_location: [0, 0], status: 'finished'}
+            key = create(:alice_key).key
+
+            response = post '/api/tasks', { api_key: key, task: task_params }.to_json, @headers
+            expect(response.status).to eq(200)
+
+            data = JSON.parse(response.body)
+            
+            expect(data).to have_key('status')
+            expect(data['status']).to eq('new')
+            
+        end
+
         it 'returns 500 and errors if task data invalid' do
             task_params = {title: 'Test', description: 'Test description', pickup_location: [1, 23], delivery_location: [0, 0]}
             key = create(:alice_key).key

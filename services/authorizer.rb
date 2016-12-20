@@ -10,7 +10,7 @@ class Authorizer
                 user._type == role.to_s.classify
             end.any?
 
-            raise NotAuthorizedError unless authorized
+            raise NotAuthorizedError.new('Forbidden action for this key') unless authorized
         end
     end
 end

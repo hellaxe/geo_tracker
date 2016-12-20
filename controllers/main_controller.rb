@@ -1,4 +1,5 @@
 class GeoTrackerApp < Sinatra::Base
+    
     get "/" do
         drivers = Driver.all.to_a
         managers = Manager.all.to_a
@@ -9,7 +10,4 @@ class GeoTrackerApp < Sinatra::Base
 
     end
 
-    get '/tasks' do
-        Task.all.to_a.to_json
-    end
 end
