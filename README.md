@@ -43,8 +43,8 @@ Returns json data with nearest new tasks for given driver.
 *   **Method**: `GET`
 *   **Url Params**: 
     **Required**
-    api_key=[string] Driver only
-    form[object]
+    api_key=[string] Driver only,
+    form[object],
     form[loc]=[array] 1 dimensional array with 2 float values. *Example*: [20.2, 10.10]
     **Optional**
     form[limit]=[integer]
@@ -61,11 +61,11 @@ Creates task with provided data.
 *   **Method**: `POST`
 *   **Url Params**: 
     **Required**
-    api_key=[string] Manager only
+    api_key=[string] Manager only,
     task:
-    title=[string] 
-    description=[string]
-    pickup_location=[array]
+    title=[string],
+    description=[string],
+    pickup_location=[array],
     delivery_location=[array]
 * **Success Response**
     *   **Code:** 200
@@ -77,7 +77,7 @@ Assigns task to given driver
 *   **Method**: `PATCH`
 *   **Url Params**: 
     **Required**
-    api_key=[string] Driver only
+    api_key=[string] Driver only,
     id=[string]
 * **Success Response**
     *   **Code:** 204
@@ -89,7 +89,7 @@ Assigns task to given driver
 *   **Method**: `PATCH`
 *   **Url Params**: 
     **Required**
-    api_key=[string] Driver only
+    api_key=[string] Driver only, 
     id=[string]
 * **Success Response**
     *   **Code:** 204
